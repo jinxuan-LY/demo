@@ -1,6 +1,5 @@
 package org.example;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -10,10 +9,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class Main {
     protected static volatile boolean running = true;
+
     public static void main(String[] args) {
-//        org.example.HelloWorld helloWorld = new org.example.HelloWorld();
-//        helloWorld.setName("jy");
-//        helloWorld.PrintHello();
 
         ClassPathXmlApplicationContext applicationContext =
                 new ClassPathXmlApplicationContext(new String[]{"spring-config.xml"});
@@ -21,14 +18,15 @@ public class Main {
         helloWorld.PrintHello();
         applicationContext.refresh();
         applicationContext.start();
-//
-//        synchronized (Main.class) {
-//            while (running) {
-//                try {
-//                    Main.class.wait();
-//                } catch (Throwable e) {
-//                }
-//            }
-//        }
+
+        synchronized (Main.class) {
+            while (running) {
+                try {
+                    Main.class.wait();
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
