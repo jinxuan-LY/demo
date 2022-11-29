@@ -60,12 +60,8 @@ public class MerchantPrimaryAccountNumberFieldResolver implements MerchantAccoun
             return false;
         }
         merchantAccountInfo.setNns(mpan.substring(0, NNS_LENGTH));
-        String luhn = LuhnUtil.generateLuhn(mpan);
-        if (luhn == null) {
-            log.warn("Failed to generate luhn of {}.", mpan);
-            return false;
-        }
-        merchantAccountInfo.setMpan(mpan + luhn);
+        // 支付解析二维码不添加校验位
+        merchantAccountInfo.setMpan(mpan);
         return true;
     }
 }

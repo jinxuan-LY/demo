@@ -41,8 +41,16 @@
         <dependency>
             <groupId>com.shopee.bankingcommonframework</groupId>
             <artifactId>bcf-common</artifactId>
-            <version>2.5.0-RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

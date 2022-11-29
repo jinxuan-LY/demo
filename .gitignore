@@ -5,3 +5,4 @@
 *.ipr
 *.iws
 
+/LOG_HOME_IS_UNDEFINED/data.log
