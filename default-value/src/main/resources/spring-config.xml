@@ -16,14 +16,14 @@
         </property>
     </bean>
 
-    <bean id="portalConfig" name="portal"
-          class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
-        <property name="ignoreUnresolvablePlaceholders" value="true"/>
-        <property name="locations">
-            <list>
-                <value>classpath:portal.properties</value>
-            </list>
-        </property>
-    </bean>
+<!--    <bean id="portalConfig" name="portal"-->
+<!--          class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">-->
+<!--        <property name="ignoreUnresolvablePlaceholders" value="true"/>-->
+<!--        <property name="locations">-->
+<!--            <list>-->
+<!--                <value>classpath:portal.properties</value>-->
+<!--            </list>-->
+<!--        </property>-->
+<!--    </bean>-->
 
 </beans>

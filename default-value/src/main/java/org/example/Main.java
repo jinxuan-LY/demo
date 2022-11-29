@@ -14,19 +14,19 @@ public class Main {
 
         ClassPathXmlApplicationContext applicationContext =
                 new ClassPathXmlApplicationContext(new String[]{"spring-config.xml"});
-        HelloWorld helloWorld = (HelloWorld) applicationContext.getBean("helloWorld");
-        helloWorld.PrintHello();
-        applicationContext.refresh();
         applicationContext.start();
 
-        synchronized (Main.class) {
-            while (running) {
-                try {
-                    Main.class.wait();
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        HelloWorld helloWorld = (HelloWorld) applicationContext.getBean("helloWorld");
+        helloWorld.PrintHello();
+
+//        synchronized (Main.class) {
+//            while (running) {
+//                try {
+//                    Main.class.wait();
+//                } catch (Throwable e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
     }
 }
