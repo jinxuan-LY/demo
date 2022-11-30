@@ -47,6 +47,7 @@ public abstract class AbstractParser {
             dto.setExpression(item.getAlert_rule_content().getContent().getExpr());
             dto.setDuration(item.getAlert_rule_content().getContent().getForTime());
             dto.setAlertGroup(buildAlertGroup(item.getAlert_rule_labels()));
+            dto.setCall(buildCall(item.getAlert_rule_labels()));
 
             stdRuleDTOList.add(dto);
         }
@@ -67,6 +68,10 @@ public abstract class AbstractParser {
             }
         });
         return stdRuleDTOList;
+    }
+
+    protected String buildCall(JSONObject alert_rule_labels){
+        return "否";
     }
 
 

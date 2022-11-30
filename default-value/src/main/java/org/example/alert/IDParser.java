@@ -1,5 +1,8 @@
 package org.example.alert;
 
+import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,11 +41,12 @@ public class IDParser extends AbstractParser {
         serviceNameMap.put("payment-sequence", "payment-sequence");
         serviceNameMap.put("smart-payment", "smart-payment");
         serviceNameMap.put("payment-consumer", "payment-consumer");
+        serviceNameMap.put("bbw-agent", "payment-consumer");
+        serviceNameMap.put("bbwagent", "payment-consumer");
         serviceNameMap.put("payment-skn", "payment-skn");
         serviceNameMap.put("payment-rtgs", "payment-rtgs");
         serviceNameMap.put("rtgs", "payment-rtgs");
-        serviceNameMap.put("bbw-agent", "bbw-agent");
-        serviceNameMap.put("bbwagent", "bbw-agent");
+
         serviceNameMap.put("auto-recon-sftp-agent", "auto-recon-sftp-agent");
         serviceNameMap.put("auto-recon-service", "auto-recon-service");
         serviceNameMap.put("payment-auth", "payment-auth");
@@ -64,8 +68,8 @@ public class IDParser extends AbstractParser {
         serviceNameMap.put("acquiring-gw", "acquiring-gw");
         serviceNameMap.put("acquiring-dd", "acquiring-dd");
         serviceNameMap.put("acquiring-va", "acquiring-va");
+        serviceNameMap.put("sipp-agent", "acquiring-va");
         serviceNameMap.put("[PMT] VA ", "acquiring-va");
-        serviceNameMap.put("sipp-agent", "sipp-agent");
         serviceNameMap.put("acquiring-mix", "acquiring-mix");
         serviceNameMap.put("acquiring-payroll", "acquiring-payroll");
         serviceNameMap.put("acquiring-manager", "acquiring-manager");
@@ -85,4 +89,13 @@ public class IDParser extends AbstractParser {
         return serviceNameMap.get(key) != null ? serviceNameMap.get(key) : key;
     }
 
+    protected String buildCall(JSONObject alert_rule_labels) {
+        String critical = "critical";
+        if (StringUtils.equals(alert_rule_labels.getString("Payment-Tech"), critical)
+                || StringUtils.equals(alert_rule_labels.getString("Payment-Bussiness"), critical)) {
+            return "是";
+        } else {
+            return "否";
+        }
+    }
 }

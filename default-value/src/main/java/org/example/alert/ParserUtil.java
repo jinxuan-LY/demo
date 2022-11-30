@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 /**
@@ -54,7 +55,9 @@ public class ParserUtil {
             // 按照服务名分组写入excel
             int sheetNum = 1;
             Map<String, List<StdRuleDTO>> ruleMap = rules.stream().collect(Collectors.groupingBy(StdRuleDTO::getServiceName));
-            for (Map.Entry<String, List<StdRuleDTO>> entry : ruleMap.entrySet()) {
+            TreeMap<String, List<StdRuleDTO>> ruleMapSorted = new TreeMap<>(ruleMap);
+
+            for (Map.Entry<String, List<StdRuleDTO>> entry : ruleMapSorted.entrySet()) {
                 String key = entry.getKey();
                 if (StringUtils.containsAny(entry.getKey(), "[")) {
                     key = "common" + sheetNum++;
@@ -98,13 +101,11 @@ public class ParserUtil {
         sheet.setColumnWidth(columnIndex++, 4 * 20 * 256);
         sheet.setColumnWidth(columnIndex++, 10 * 256);
         sheet.setColumnWidth(columnIndex++, 40 * 256);
+        sheet.setColumnWidth(columnIndex++, 30 * 256);
         sheet.setColumnWidth(columnIndex++, 10 * 256);
         sheet.setColumnWidth(columnIndex++, 10 * 256);
-
-        List<String> strList = new ArrayList<>();
 
         int rowNum = 0;
-
         CellStyle titleStyle = wb.createCellStyle();
         titleStyle.setAlignment(HorizontalAlignment.CENTER);
         List<String> colList = new ArrayList<>();
@@ -116,6 +117,7 @@ public class ParserUtil {
         colList.add("持续时间");
         colList.add("规则说明");
         colList.add("告警群");
+        colList.add("电话告警");
         colList.add("状态");
         Row titleRow = sheet.createRow(rowNum++);
         for (int cellNum = 0; cellNum < colList.size(); cellNum++) {
@@ -151,6 +153,9 @@ public class ParserUtil {
 
                 Cell cell5 = detailRow.createCell(cellNum++);
                 cell5.setCellValue(item.getAlertGroup());
+
+                Cell cell5_1 = detailRow.createCell(cellNum++);
+                cell5_1.setCellValue(item.getCall());
 
                 Cell cell6 = detailRow.createCell(cellNum++);
                 cell6.setCellValue(item.getStatus());

@@ -18,6 +18,7 @@ public class StdRuleDTO{
     private String expression;
     private String duration;
     private String alertGroup;
+    private String call;
     // status: 开启、关闭
     private String status;
 }
