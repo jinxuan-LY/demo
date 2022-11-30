@@ -71,7 +71,7 @@ public abstract class AbstractParser {
     }
 
     protected String buildCall(JSONObject alert_rule_labels){
-        return "否";
+        return "unknown";
     }
 
 
