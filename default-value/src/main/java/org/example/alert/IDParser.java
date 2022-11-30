@@ -2,7 +2,9 @@ package org.example.alert;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author yuanqiang.liao
@@ -28,47 +30,59 @@ public class IDParser extends AbstractParser {
     }
 
 
-    private static final List<String> serviceNameList;
+    private static final Map<String, String> serviceNameMap;
 
     static {
-        serviceNameList = new ArrayList<>();
-        serviceNameList.add("payment-tranonline-gw");
-        serviceNameList.add("payment-sequence");
-        serviceNameList.add("smart-payment");
-        serviceNameList.add("payment-consumer");
-        serviceNameList.add("payment-skn");
-        serviceNameList.add("payment-rtgs");
-        serviceNameList.add("bbw-agent");
-        serviceNameList.add("auto-recon-sftp-agent");
-        serviceNameList.add("auto-recon-service");
-        serviceNameList.add("payment-auth");
-        serviceNameList.add("payment-tranonline-web-gw");
-        serviceNameList.add("ALTOPAY");
-        serviceNameList.add("qris");
-        serviceNameList.add("alto-service");
-        serviceNameList.add("pmt-altoagent");
-        serviceNameList.add("pmt-alto-agent");
-        serviceNameList.add("alto-agent");
-        serviceNameList.add("pmt-aj-service");
-        serviceNameList.add("pmt-aj-agent");
-        serviceNameList.add("pmt-bi-fast-service");
-        serviceNameList.add("bi-fastagent");
-        serviceNameList.add("bi-fast-agent");
-        serviceNameList.add("pmt-saa-service");
+        serviceNameMap = new HashMap<>();
+        serviceNameMap.put("payment-tranonline-gw", "payment-tranonline-gw");
+        serviceNameMap.put("payment-sequence", "payment-sequence");
+        serviceNameMap.put("smart-payment", "smart-payment");
+        serviceNameMap.put("payment-consumer", "payment-consumer");
+        serviceNameMap.put("payment-skn", "payment-skn");
+        serviceNameMap.put("payment-rtgs", "payment-rtgs");
+        serviceNameMap.put("rtgs", "payment-rtgs");
+        serviceNameMap.put("bbw-agent", "bbw-agent");
+        serviceNameMap.put("bbwagent", "bbw-agent");
+        serviceNameMap.put("auto-recon-sftp-agent", "auto-recon-sftp-agent");
+        serviceNameMap.put("auto-recon-service", "auto-recon-service");
+        serviceNameMap.put("payment-auth", "payment-auth");
+        serviceNameMap.put("payment-tranonline-web-gw", "payment-tranonline-web-gw");
+        serviceNameMap.put("ALTOPAY", "ALTOPAY");
+        serviceNameMap.put("qris", "QRIS");
+        serviceNameMap.put("alto-service", "alto-service");
+        serviceNameMap.put("pmt-altoagent", "altoagent");
+        serviceNameMap.put("pmt-alto-agent", "altoagent");
+        serviceNameMap.put("alto-agent", "altoagent");
+        serviceNameMap.put("pmt-aj-service", "aj-service");
+        serviceNameMap.put("pmt-aj-agent", "aj-agent");
+        serviceNameMap.put("pmt-bi-fast-service", "bi-fast");
+        serviceNameMap.put("bi-fast service", "bi-fast");
+        serviceNameMap.put("bi-fastagent", "bi-fast");
+        serviceNameMap.put("bi-fast-agent", "bi-fast");
+        serviceNameMap.put("pmt-saa-service", "saa-service");
 
-        serviceNameList.add("acquiring-gw");
-        serviceNameList.add("acquiring-va");
-        serviceNameList.add("acquiring-dd");
-        serviceNameList.add("acquiring-mix");
-        serviceNameList.add("acquiring-payroll");
-        serviceNameList.add("acquiring-manager");
-        serviceNameList.add("sipp-agent");
-        serviceNameList.add("acquiring-auth");
-        serviceNameList.add("acquiring-web-gw");
+        serviceNameMap.put("acquiring-gw", "acquiring-gw");
+        serviceNameMap.put("acquiring-dd", "acquiring-dd");
+        serviceNameMap.put("acquiring-va", "acquiring-va");
+        serviceNameMap.put("[PMT] VA ", "acquiring-va");
+        serviceNameMap.put("sipp-agent", "sipp-agent");
+        serviceNameMap.put("acquiring-mix", "acquiring-mix");
+        serviceNameMap.put("acquiring-payroll", "acquiring-payroll");
+        serviceNameMap.put("acquiring-manager", "acquiring-manager");
+        serviceNameMap.put("acquiring-auth", "acquiring-auth");
+        serviceNameMap.put("acquiring-web-gw", "acquiring-web-gw");
+
+        serviceNameMap.put("JVM", "JVM");
     }
 
     @Override
-    protected List<String> getServiceName() {
-        return serviceNameList;
+    protected List<String> getServiceNameList() {
+        return new ArrayList<>(serviceNameMap.keySet());
     }
+
+    @Override
+    protected String getServiceName(String key) {
+        return serviceNameMap.get(key) != null ? serviceNameMap.get(key) : key;
+    }
+
 }

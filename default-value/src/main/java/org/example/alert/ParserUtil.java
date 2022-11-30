@@ -1,6 +1,7 @@
 package org.example.alert;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.example.alert.target.StdRuleDTO;
@@ -10,6 +11,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author yuanqiang.liao
@@ -47,7 +50,19 @@ public class ParserUtil {
         try {
             //删除之前的文件
             Files.deleteIfExists(Paths.get(filePath));
-            writeDetails(wb, rules);
+
+            // 按照服务名分组写入excel
+            int sheetNum = 1;
+            Map<String, List<StdRuleDTO>> ruleMap = rules.stream().collect(Collectors.groupingBy(StdRuleDTO::getServiceName));
+            for (Map.Entry<String, List<StdRuleDTO>> entry : ruleMap.entrySet()) {
+                String key = entry.getKey();
+                if (StringUtils.containsAny(entry.getKey(), "[")) {
+                    key = "common" + sheetNum++;
+                }
+                Sheet sheet = wb.createSheet(key);
+                writeDetails(wb, sheet, entry.getValue());
+            }
+
             out = new FileOutputStream(filePath);
             wb.write(out);
         } catch (IOException e) {
@@ -74,15 +89,17 @@ public class ParserUtil {
      * @param wb
      * @param stdRuleDTOList
      */
-    private static void writeDetails(XSSFWorkbook wb, List<StdRuleDTO> stdRuleDTOList) {
-        Sheet sheet = wb.createSheet();
-        sheet.setColumnWidth(0, 2 * 20 * 256);
-        sheet.setColumnWidth(1, 4 * 20 * 256);
-        sheet.setColumnWidth(2, 20 * 256);
-        sheet.setColumnWidth(3, 4 * 20 * 256);
-        sheet.setColumnWidth(4, 20 * 256);
-        sheet.setColumnWidth(5, 20 * 256);
-        sheet.setColumnWidth(6, 20 * 256);
+    private static void writeDetails(XSSFWorkbook wb, Sheet sheet, List<StdRuleDTO> stdRuleDTOList) {
+        int columnIndex = 0;
+        sheet.setColumnWidth(columnIndex++, 20 * 256);
+        sheet.setColumnWidth(columnIndex++, 20 * 256);
+        sheet.setColumnWidth(columnIndex++, 3 * 20 * 256);
+        sheet.setColumnWidth(columnIndex++, 20 * 256);
+        sheet.setColumnWidth(columnIndex++, 4 * 20 * 256);
+        sheet.setColumnWidth(columnIndex++, 10 * 256);
+        sheet.setColumnWidth(columnIndex++, 40 * 256);
+        sheet.setColumnWidth(columnIndex++, 10 * 256);
+        sheet.setColumnWidth(columnIndex++, 10 * 256);
 
         List<String> strList = new ArrayList<>();
 
@@ -91,13 +108,15 @@ public class ParserUtil {
         CellStyle titleStyle = wb.createCellStyle();
         titleStyle.setAlignment(HorizontalAlignment.CENTER);
         List<String> colList = new ArrayList<>();
-        colList.add("serviceName");
-        colList.add("displayName");
-        colList.add("severity");
-        colList.add("expression");
-        colList.add("duration");
-        colList.add("alertGroup");
-        colList.add("status");
+        colList.add("规则ID");
+        colList.add("服务名称");
+        colList.add("规则名称");
+        colList.add("告警等级");
+        colList.add("表达式");
+        colList.add("持续时间");
+        colList.add("规则说明");
+        colList.add("告警群");
+        colList.add("状态");
         Row titleRow = sheet.createRow(rowNum++);
         for (int cellNum = 0; cellNum < colList.size(); cellNum++) {
             Cell cell = titleRow.createCell(cellNum);
@@ -109,6 +128,9 @@ public class ParserUtil {
             for (StdRuleDTO item : stdRuleDTOList) {
                 Row detailRow = sheet.createRow(rowNum++);
                 int cellNum = 0;
+                Cell cell = detailRow.createCell(cellNum++);
+                cell.setCellValue(item.getRuleId());
+
                 Cell cell0 = detailRow.createCell(cellNum++);
                 cell0.setCellValue(item.getServiceName());
 
@@ -123,6 +145,9 @@ public class ParserUtil {
 
                 Cell cell4 = detailRow.createCell(cellNum++);
                 cell4.setCellValue(item.getDuration());
+
+                Cell cell4_1 = detailRow.createCell(cellNum++);
+                cell4_1.setCellValue("");
 
                 Cell cell5 = detailRow.createCell(cellNum++);
                 cell5.setCellValue(item.getAlertGroup());

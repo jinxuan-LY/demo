@@ -70,18 +70,20 @@ public abstract class AbstractParser {
     }
 
 
-    abstract protected List<String> getServiceName();
+    abstract protected List<String> getServiceNameList();
+
+    abstract protected String getServiceName(String key);
 
     private String buildServiceName(String display_name) {
-        for (String item : getServiceName()) {
+        for (String item : getServiceNameList()) {
             if (StringUtils.containsAnyIgnoreCase(display_name, item)) {
-                return item;
+                return getServiceName(item);
             }
         }
         return StringUtils.substring(display_name, 0, 30);
     }
 
-    private static String buildAlertGroup(JSONObject alert_rule_labels) {
+    protected static String buildAlertGroup(JSONObject alert_rule_labels) {
         if (StringUtils.isNotBlank(alert_rule_labels.getString("Payment-Tech"))
                 && StringUtils.isNotBlank(alert_rule_labels.getString("Payment-Bussiness"))) {
             return "技术&业务";
