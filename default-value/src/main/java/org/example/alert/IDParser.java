@@ -44,11 +44,15 @@ public class IDParser extends AbstractParser {
         serviceNameList.add("payment-auth");
         serviceNameList.add("payment-tranonline-web-gw");
         serviceNameList.add("ALTOPAY");
+        serviceNameList.add("qris");
         serviceNameList.add("alto-service");
         serviceNameList.add("pmt-altoagent");
+        serviceNameList.add("pmt-alto-agent");
+        serviceNameList.add("alto-agent");
         serviceNameList.add("pmt-aj-service");
         serviceNameList.add("pmt-aj-agent");
         serviceNameList.add("pmt-bi-fast-service");
+        serviceNameList.add("bi-fastagent");
         serviceNameList.add("bi-fast-agent");
         serviceNameList.add("pmt-saa-service");
 

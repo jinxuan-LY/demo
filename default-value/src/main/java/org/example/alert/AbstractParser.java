@@ -39,6 +39,7 @@ public abstract class AbstractParser {
         List<StdRuleDTO> stdRuleDTOList = new ArrayList<>();
         for (Rule item : rule.getAlert_rules()) {
             StdRuleDTO dto = new StdRuleDTO();
+            dto.setRuleId(item.getRule_id());
             dto.setServiceName(buildServiceName(item.getDisplay_name()));
             dto.setDisplayName(item.getDisplay_name());
             dto.setStatus(StringUtils.equals(item.getIs_disabled(), "0") ? "开启" : "关闭");
@@ -73,7 +74,7 @@ public abstract class AbstractParser {
 
     private String buildServiceName(String display_name) {
         for (String item : getServiceName()) {
-            if (display_name.contains(item)) {
+            if (StringUtils.containsAnyIgnoreCase(display_name, item)) {
                 return item;
             }
         }

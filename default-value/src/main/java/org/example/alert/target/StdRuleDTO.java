@@ -9,6 +9,7 @@ import lombok.Data;
  */
 @Data
 public class StdRuleDTO{
+    private String ruleId;
     private String serviceName;
     // title
     private String displayName;
